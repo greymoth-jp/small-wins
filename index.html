@@ -12,6 +12,13 @@
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="The Order of Small Things" />
 <meta name="twitter:image" content="og.png" />
+<link rel="manifest" href="manifest.json" />
+<link rel="icon" href="icon-192.png" />
+<link rel="apple-touch-icon" href="icon-192.png" />
+<meta name="theme-color" content="#f3ead6" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="Small Wins" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
 <style>
   :root{
     --parch:#f3ead6; --parch-2:#e9dcc0; --card:#f8f1e0;
@@ -19,6 +26,7 @@
     --gold:#a8842e; --gold-2:#c9a14a; --wax:#b3402e; --line:#d8c9a6;
   }
   *{box-sizing:border-box;margin:0;padding:0}
+  @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
   html,body{height:100%}
   body{
     font-family:"Hoefler Text",Garamond,"EB Garamond","Times New Roman",Georgia,serif;
@@ -255,7 +263,7 @@ async function renderAtlas(highlight){
   document.getElementById("atlasHead").textContent="today the world mostly won "+top.name.replace(/^The /,"").toLowerCase();
   const total=rows.reduce((s,r)=>s+r.n,0);
   document.getElementById("atlasSub").textContent = live ? total.toLocaleString()+" medals awarded today · live"
-    : "illustrative preview — seeded numbers until the roll goes live";
+    : "the roll is just beginning today — add yours to help chart it";
   const bars=document.getElementById("bars");bars.innerHTML="";
   for(const {a,n} of rows){
     const col=(THEMES[a.key]||THEMES._default).ribbon;
