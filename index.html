@@ -124,6 +124,7 @@
 <script src="engine.js"></script>
 <script>
 const {ARCHETYPES, hash, classify, todayCount, isSensitive} = WinEngine;
+const ATLAS_API="https://observatory-atlas.m-hirakawa07.workers.dev", APP="small-wins";
 const card=document.getElementById("card");
 const ctx=card.getContext("2d");
 let currentArche=null, currentSensitive=false, lastText="", liveCounts=null;
@@ -238,10 +239,10 @@ function wrap(ctx,text,cx,cy,maxW,lh){
 
 /* opt-in collective roll — only when served by server.cjs; file:// falls back to seed. Sends ONLY {archetype,date}. */
 async function fetchAtlas(){ try{const d=new Date().toISOString().slice(0,10);
-  const r=await fetch("/api/atlas?date="+d,{cache:"no-store"});if(!r.ok)throw 0;const j=await r.json();liveCounts=j.counts||{};return j;}
+  const r=await fetch(ATLAS_API+"/atlas?app="+APP+"&date="+d,{cache:"no-store"});if(!r.ok)throw 0;const j=await r.json();liveCounts=j.counts||{};return j;}
   catch(e){liveCounts=null;return null;} }
 async function contribute(key){ try{const d=new Date().toISOString().slice(0,10);
-  const r=await fetch("/api/contribute",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({archetype:key,date:d})});
+  const r=await fetch(ATLAS_API+"/contribute?app="+APP,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({archetype:key,date:d})});
   const j=await r.json();if(j&&j.counts)liveCounts=j.counts;return j;}catch(e){return null;} }
 function userTally(){try{return JSON.parse(localStorage.getItem("sw_tally")||"{}")}catch(e){return{}}}
 
