@@ -100,7 +100,7 @@
     <section class="stage" id="stage">
       <canvas id="card" width="1080" height="1350"></canvas>
       <div class="actions">
-        <button class="ghost" id="dlBtn">Download medal</button>
+        <button class="ghost" id="dlBtn">Share medal</button>
         <button class="ghost" id="addBtn">Add to today's roll</button>
       </div>
       <div class="added" id="added">❦ inducted — you are on today's roll of honour</div>
@@ -281,9 +281,17 @@ document.getElementById("readBtn").addEventListener("click",()=>{
   const stage=document.getElementById("stage");stage.style.display="flex";
   stage.scrollIntoView({behavior:"smooth",block:"center"});
 });
-document.getElementById("dlBtn").addEventListener("click",()=>{
-  if(!currentArche)return;const a=document.createElement("a");
-  a.download="order-of-small-things-"+currentArche.key+".png";a.href=card.toDataURL("image/png");a.click();
+document.getElementById("dlBtn").addEventListener("click",async ()=>{
+  if(!currentArche)return;
+  const url=location.origin+location.pathname;
+  const txt="Today I won “"+currentArche.name+"”. What small thing did you win? "+url;
+  const name="order-of-small-things-"+currentArche.key+".png";
+  try{
+    const blob=await new Promise(r=>card.toBlob(r,"image/png"));
+    const file=new File([blob],name,{type:"image/png"});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){ await navigator.share({files:[file],text:txt}); return; }
+  }catch(e){ if(e&&e.name==="AbortError")return; }
+  const a=document.createElement("a");a.download=name;a.href=card.toDataURL("image/png");a.click();
 });
 document.getElementById("addBtn").addEventListener("click",async ()=>{
   if(!currentArche||currentSensitive)return;
