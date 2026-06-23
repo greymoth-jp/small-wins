@@ -194,6 +194,7 @@ function shade(hex,amt){ const n=parseInt(hex.slice(1),16); let r=(n>>16)+amt,g=
 function draw(a, seedText, liveCount){
   const W=card.width,H=card.height,seed=hash(seedText||a.key);
   const t=THEMES[a.key]||THEMES._default;
+  card.setAttribute("role","img"); card.setAttribute("aria-label", a.name+" — "+a.citation);  // screen-reader text
   ctx.clearRect(0,0,W,H);
   // parchment
   const g=ctx.createLinearGradient(0,0,W*0.4,H);
